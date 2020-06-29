@@ -17,7 +17,7 @@ jobs:
 
         include:
           - name: windows-gcc
-            os: windows-latest
+            os: windows-2016
             compiler: gcc
 
     steps:
@@ -47,7 +47,7 @@ jobs:
         run: |
           choco uninstall mingw
           choco uninstall ninja
-          
+
           choco install -y mingw -x86 --force
           choco install -y ninja --force
       

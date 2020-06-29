@@ -16,7 +16,7 @@ jobs:
 
         include:
           - name: windows-gcc
-            os: windows-latest
+            os: windows-2016
             compiler: gcc
 
     steps:

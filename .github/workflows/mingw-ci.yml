@@ -22,11 +22,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install MinGW 32-bit and Ninjs
+      - name: Install MinGW 32-bit and Ninja
         shell: powershell
         run: |
           choco install -y ninja --force
-          choco install mingw --x86 --force --params
+          choco install -y mingw --x86 --force
       
       - name: Build 32-bit
         run: |

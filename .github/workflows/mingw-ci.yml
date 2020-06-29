@@ -25,7 +25,6 @@ jobs:
       - name: Install MinGW 32-bit and Ninja
         shell: powershell
         run: |
-          choco uninstall mingw
           choco install -y mingw -x86 --force
           choco install -y ninja --force
 

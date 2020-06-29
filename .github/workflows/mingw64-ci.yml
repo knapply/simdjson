@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Windows
+      - name: Install
         shell: powershell
         run: |
           choco install -y ninja --force              # critical

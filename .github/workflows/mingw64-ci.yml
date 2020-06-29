@@ -41,21 +41,3 @@ jobs:
           cd buildx64
           ctest -j4 --output-on-failure -E checkperf
           cd ..
-
-      - name: Install MinGW 32-bit
-        shell: powershell
-        run: |
-          choco install mingw --x86 --force --params
-      
-      - name: Build 32-bit
-        run: |
-          mkdir buildx86
-          cd buildx86
-          cmake -DSIMDJSON_BUILD_STATIC=ON ..
-          cmake --build . --verbose
-          cd ..
-
-      - name: Test 32-bit
-        run: |
-          cd buildx86
-          ctest -j4 --output-on-failure -E checkperf

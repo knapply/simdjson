@@ -26,7 +26,6 @@ jobs:
       - name: Setup Windows
         shell: powershell
         run: |
-          # choco install -y ming32 --force
           choco install -y ninja --force              # critical
 
       - name: Build 64-bit
@@ -42,17 +41,3 @@ jobs:
           cd buildx64
           ctest -j4 --output-on-failure -E checkperf
           cd ..
-
-
-      # - name: Build 32-bit
-      #   run: |
-      #     mkdir buildx86
-      #     cd buildx86
-      #     cmake -DSIMDJSON_BUILD_STATIC=ON ..
-      #     cmake --build . --verbose
-      #     cd ..
-
-      # - name: Test 32-bit
-      #   run: |
-      #     cd buildx86
-      #     ctest -j4 --output-on-failure -E checkperf

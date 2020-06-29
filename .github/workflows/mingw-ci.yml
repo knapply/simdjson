@@ -28,6 +28,10 @@ jobs:
           choco uninstall mingw
           choco install -y mingw -x86 --force
           choco install -y ninja --force
+
+          echo "::set-env name=CC::gcc"
+          echo "::set-env name=CXX::g++"
+          echo "::set-env name=PATH::$env:PATH"
       
       - name: Build 32-bit
         run: |

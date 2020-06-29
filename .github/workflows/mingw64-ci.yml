@@ -1,21 +1,14 @@
-name: MinGW64-CI
+name: MinGW-CI
 
 on: push
 
-
-# Important: scoop will either install 32-bit GCC or 64-bit GCC, not both.
-
-# It is important to build static libraries because cmake is not smart enough under Windows/mingw to take care of the path. So
-# with a dynamic library, you could get failures due to the fact that the EXE can't find its DLL.
 jobs:
   ci:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
 
     env:
-      CMAKE_GENERATOR: Ninja # This is critical, try ' cmake  -GNinja-DSIMDJSON_BUILD_STATIC=ON .. ' if using the command line
-      CC: gcc
-      CXX: g++
+      CMAKE_GENERATOR: Ninja # critical
 
     strategy:
       fail-fast: false
@@ -24,35 +17,42 @@ jobs:
 
         include:
           - name: windows-gcc
-            os: windows-2016
-            compiler: gcc
-
-          - name: windows-gcc
             os: windows-latest
             compiler: gcc
 
-    steps: # To reproduce what is below, start a powershell with administrative rights, using scoop *is* a good idea
+    steps:
       - uses: actions/checkout@v2
 
       - name: Setup Windows
         shell: powershell
         run: |
-          Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-          
-          scoop install sudo --global
-          sudo scoop install git --global 
-          sudo scoop install ninja --global
-          sudo scoop install gcc --arch 64bit --global 
-          echo "::set-env name=CC::gcc"
-          echo "::set-env name=CXX::g++"
-          echo "::set-env name=PATH::$env:PATH"
-      - name: Build and Test 64-bit x64
-        run: |
-          mkdir build64
-          cd build64
-          cmake -DSIMDJSON_BUILD_STATIC=ON ..
-          cmake --build . --target basictests --verbose
-          ctest . -R basictests  --output-on-failure
+          # choco install -y ming32 --force
+          choco install -y ninja --force              # critical
 
-# You might wonder why we are running only one test (basictests). Well, it is because
-# otherwise, github actions timeout on us.
+      - name: Build 64-bit
+        run: |
+          mkdir buildx64
+          cd buildx64
+          cmake -DSIMDJSON_BUILD_STATIC=ON ..
+          cmake --build . --verbose
+          cd ..
+
+      - name: Test 64-bit
+        run: |
+          cd buildx64
+          ctest -j4 --output-on-failure -E checkperf
+          cd ..
+
+
+      # - name: Build 32-bit
+      #   run: |
+      #     mkdir buildx86
+      #     cd buildx86
+      #     cmake -DSIMDJSON_BUILD_STATIC=ON ..
+      #     cmake --build . --verbose
+      #     cd ..
+
+      # - name: Test 32-bit
+      #   run: |
+      #     cd buildx86
+      #     ctest -j4 --output-on-failure -E checkperf

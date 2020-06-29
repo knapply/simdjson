@@ -41,3 +41,25 @@ jobs:
           cd buildx64
           ctest -j4 --output-on-failure -E checkperf
           cd ..
+
+      - name: Uninstall MinGW and Ninja, Install MinGW 32-bit and Reinstall Ninja
+        shell: powershell
+        run: |
+          choco uninstall mingw
+          choco uninstall ninja
+          
+          choco install -y mingw -x86 --force
+          choco install -y ninja --force
+      
+      - name: Build 32-bit
+        run: |
+          mkdir buildx86
+          cd buildx86
+          cmake -DSIMDJSON_BUILD_STATIC=ON ..
+          cmake --build . --verbose
+          cd ..
+
+      - name: Test 32-bit
+        run: |
+          cd buildx86
+          ctest -j4 --output-on-failure -E checkperf

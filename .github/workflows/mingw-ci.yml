@@ -26,7 +26,7 @@ jobs:
         shell: powershell
         run: |
           choco install -y mingw -x86 --force
-          choco install -y cmake.install --force
+          choco install -y cmake --force
           choco install -y ninja --force
 
           echo "::set-env name=CC::gcc"

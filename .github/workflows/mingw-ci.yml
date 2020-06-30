@@ -10,9 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         mingw: ["MINGW32", "MINGW64"]
-        include:
-          - mingw: "MINGW32"
-          - mingw: "MINGW64"
 
     env:
       CMAKE_GENERATOR: MSYS Makefiles

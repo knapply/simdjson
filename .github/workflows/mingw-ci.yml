@@ -21,8 +21,8 @@ jobs:
 
       - name: Build 64-bit
         run: |
-          mkdir build${{ matrix.mingw-bits }}
-          cd build${{ matrix.mingw-n-bits }}
+          mkdir build
+          cd build
           cmake -DSIMDJSON_BUILD_STATIC=ON ..
           cmake --build . --verbose
           ctest -j4 --output-on-failure -E checkperf

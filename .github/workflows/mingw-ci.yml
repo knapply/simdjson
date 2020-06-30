@@ -31,7 +31,7 @@ jobs:
           gcc --version
           g++ --version
 
-      - name: Build
+      - name: Build and Test
         run: |
           mkdir build
           cd build
@@ -40,6 +40,7 @@ jobs:
           
       - name: Test
         run: |
+          cmake --build . --target basictests numberparsingcheck stringparsingcheck errortests integer_tests pointercheck --verbose
           ctest . -R stringparsingcheck  --output-on-failure
           ctest . -R numberparsingcheck  --output-on-failure
           ctest . -R errortests  --output-on-failure

@@ -3,33 +3,20 @@ name: MinGW-CI
 on: push
 
 jobs:
-  ci:
-    name: ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
-
-    env:
-      CMAKE_GENERATOR: Ninja # critical
-
+  windows-mingw:
+    name: MinGW ${{ matrix.mingw-n-bits }}
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        name: [windows-gcc]
-
-        include:
-          - name: windows-gcc
-            os: windows-2016
-            compiler: gcc
+        mingw-n-bits:
+          - 32
+          - 64
+    env:
+      CMAKE_ARGS: -DSIMDJSON_BUILD_STATIC=ON
+      CMAKE_GENERATOR: MSYS Makefiles
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Install Ninja
-        shell: powershell
-        run: |
-          choco install -y mingw --force
-          choco install -y cmake --force
-          choco install -y ninja --force              # critical
-
       - name: Build 64-bit
         run: |
           mkdir buildx64
@@ -38,30 +25,66 @@ jobs:
           cmake --build . --verbose
           cd ..
 
-      - name: Test 64-bit
-        run: |
-          cd buildx64
-          ctest -j4 --output-on-failure -E checkperf
-          cd ..
+# jobs:
+#   ci:
+#     name: ${{ matrix.name }}
+#     runs-on: ${{ matrix.os }}
 
-      - name: Uninstall MinGW and Ninja, Install MinGW 32-bit and Reinstall Ninja
-        shell: powershell
-        run: |
-          choco uninstall mingw
-          choco uninstall ninja
+#     env:
+#       CMAKE_GENERATOR: Ninja # critical
 
-          choco install -y mingw -x86 --force
-          choco install -y ninja --force
-      
-      - name: Build 32-bit
-        run: |
-          mkdir buildx86
-          cd buildx86
-          cmake -DSIMDJSON_BUILD_STATIC=ON ..
-          cmake --build . --verbose
-          cd ..
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         name: [windows-gcc]
 
-      - name: Test 32-bit
-        run: |
-          cd buildx86
-          ctest -j4 --output-on-failure -E checkperf
+#         include:
+#           - name: windows-gcc
+#             os: windows-2016
+#             compiler: gcc
+
+#     steps:
+#       - uses: actions/checkout@v2
+
+#       - name: Install Ninja
+#         shell: powershell
+#         run: |
+#           choco install -y mingw --force
+#           choco install -y cmake --force
+#           choco install -y ninja --force              # critical
+
+#       - name: Build 64-bit
+#         run: |
+#           mkdir buildx64
+#           cd buildx64
+#           cmake -DSIMDJSON_BUILD_STATIC=ON -DSIMDJSON_ENABLE_THREADS=OFF -SIMDJSON_DO_NOT_USE_THREADS_NO_MATTER_WHAT=ON ..
+#           cmake --build . --verbose
+#           cd ..
+
+#       - name: Test 64-bit
+#         run: |
+#           cd buildx64
+#           ctest -j4 --output-on-failure -E checkperf
+#           cd ..
+
+#       - name: Uninstall MinGW and Ninja, Install MinGW 32-bit and Reinstall Ninja
+#         shell: powershell
+#         run: |
+#           choco uninstall mingw
+#           choco uninstall ninja
+
+#           choco install -y mingw -x86 --force
+#           choco install -y ninja --force
+
+#       - name: Build 32-bit
+#         run: |
+#           mkdir buildx86
+#           cd buildx86
+#           cmake -DSIMDJSON_BUILD_STATIC=ON ..
+#           cmake --build . --verbose
+#           cd ..
+
+#       - name: Test 32-bit
+#         run: |
+#           cd buildx86
+#           ctest -j4 --output-on-failure -E checkperf

@@ -32,8 +32,9 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build . --verbose
-          ctest -j4 --output-on-failure -E checkperf
+          mkdir build
+          cd build
+          cmake -DSIMDJSON_BUILD_STATIC=ON  -DSIMDJSON_COMPETITION=OFF -DSIMDJSON_GOOGLE_BENCHMARKS=OFF -DSIMDJSON_ENABLE_THREADS=OFF ..
           cmake --build . --verbose
           
       - name: Test

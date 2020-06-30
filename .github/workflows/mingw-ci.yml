@@ -9,10 +9,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mingw-n-bits:
-          - 32
-          - 64
+        mingw: ["MINGW32", "MINGW64"]
+        include:
+          - mingw: "MINGW32"
+            package: "mingw-w64-i686"
+          - mingw: "MINGW64"
+            package: "mingw-w64-x86_64"
+
     env:
+      MSYSTEM: ${{ matrix.mingw }}
       CMAKE_ARGS: -DSIMDJSON_BUILD_STATIC=ON
       CMAKE_GENERATOR: MSYS Makefiles
 

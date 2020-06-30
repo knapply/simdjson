@@ -18,6 +18,7 @@ jobs:
 
     env:
       MSYSTEM: ${{ matrix.mingw }}
+      CHERE_INVOKING: 1
       CMAKE_ARGS: -DSIMDJSON_BUILD_STATIC=ON
       CMAKE_GENERATOR: MSYS Makefiles
 

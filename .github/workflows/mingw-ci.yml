@@ -10,23 +10,15 @@ jobs:
       fail-fast: false
       matrix:
         mingw: ["MINGW32", "MINGW64"]
-
     env:
       CMAKE_GENERATOR: MSYS Makefiles
 
     steps:
       - uses: actions/checkout@v2
-
       - uses: msys2/setup-msys2@v1
         with:
           update: true # cache: true
           msystem: ${{ matrix.mingw }}
-
-      - name: Compiler
-        run: |
-          gcc --version
-          g++ --version
-
       - name: Build and Test
         run: |
           mkdir build

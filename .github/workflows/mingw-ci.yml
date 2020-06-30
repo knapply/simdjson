@@ -1,50 +1,28 @@
-name: MinGW32-CI
+name: MinGW-CI
 
 on: push
 
 jobs:
-  ci:
-    name: ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
-
-    env:
-      CMAKE_GENERATOR: Ninja
+  windows-mingw:
+    name: MinGW ${{ matrix.mingw-n-bits }}
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        name: [windows-gcc]
-
-        include:
-          - name: windows-gcc
-            os: windows-2016
-            compiler: gcc
+        mingw-n-bits:
+          - 32
+          - 64
+    env:
+      CMAKE_ARGS: -DSIMDJSON_BUILD_STATIC=ON
+      CMAKE_GENERATOR: MSYS Makefiles
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install MinGW 32-bit and Ninja
-        shell: powershell
+      - name: Build 64-bit
         run: |
-          # choco install -y mingw -x86 --force
-          # choco install -y cmake --force
-          # choco install -y ninja --force
-          # echo "::set-env name=CC::gcc"
-          # echo "::set-env name=CXX::g++"
-          # echo "::set-env name=PATH::$env:PATH"
-      
-      - name: Build 32-bit
-        run: |
-          echo "::set-env name=CC::gcc"
-          echo "::set-env name=CXX::g++"
-          echo "::set-env name=PATH::$env:PATH"
-
-          mkdir buildx86
-          cd buildx86
+          mkdir build{{ matrix.mingw-n-bits }}
+          cd build{{ matrix.mingw-n-bits }}
           cmake -DSIMDJSON_BUILD_STATIC=ON ..
           cmake --build . --verbose
-          cd ..
-
-      - name: Test 32-bit
-        run: |
-          cd buildx86
           ctest -j4 --output-on-failure -E checkperf

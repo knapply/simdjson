@@ -4,7 +4,7 @@ on: push
 
 jobs:
   windows-mingw:
-    name: MinGW ${{ matrix.mingw-n-bits }}
+    name: ${{ mingw }}
     runs-on: windows-latest
     strategy:
       fail-fast: false
@@ -28,6 +28,6 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DSIMDJSON_BUILD_STATIC=ON ..
+          cmake -DSIMDJSON_BUILD_STATIC=ON -DSIMDJSON_ENABLE_THREADS=OFF ..
           cmake --build . --verbose
           ctest -j4 --output-on-failure -E checkperf

@@ -26,6 +26,8 @@ jobs:
       - name: Install Ninja
         shell: powershell
         run: |
+          choco install -y mingw --force
+          choco install -y cmake --force
           choco install -y ninja --force              # critical
 
       - name: Build 64-bit

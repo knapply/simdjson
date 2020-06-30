@@ -12,9 +12,7 @@ jobs:
         mingw: ["MINGW32", "MINGW64"]
         include:
           - mingw: "MINGW32"
-            package: "mingw-w64-i686"
           - mingw: "MINGW64"
-            package: "mingw-w64-x86_64"
 
     env:
       CMAKE_ARGS: -DSIMDJSON_BUILD_STATIC=ON  -DSIMDJSON_COMPETITION=OFF -DSIMDJSON_GOOGLE_BENCHMARKS=OFF -DSIMDJSON_ENABLE_THREADS=OFF -DSIMDJSON_DO_NOT_USE_THREADS_NO_MATTER_WHAT=ON

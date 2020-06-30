@@ -27,6 +27,7 @@ jobs:
 
       - name: Compiler
         run: |
+          set MSYSTEM=${{ matrix.mingw }}
           gcc --version
           g++ --version
 
@@ -44,4 +45,3 @@ jobs:
           ctest . -R errortests  --output-on-failure
           ctest . -R integer_tests  --output-on-failure
           ctest . -R pointercheck  --output-on-failure
-

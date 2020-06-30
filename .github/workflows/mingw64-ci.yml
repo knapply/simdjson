@@ -32,7 +32,7 @@ jobs:
         run: |
           mkdir buildx64
           cd buildx64
-          cmake -DSIMDJSON_BUILD_STATIC=ON ..
+          cmake -DSIMDJSON_BUILD_STATIC=ON -SIMDJSON_DO_NOT_USE_THREADS_NO_MATTER_WHAT=1 ..
           cmake --build . --verbose
           cd ..
 

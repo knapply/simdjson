@@ -38,4 +38,9 @@ jobs:
           
       - name: Test
         run: |
-          ctest -j4 --output-on-failure -E checkperf
+          ctest . -R stringparsingcheck  --output-on-failure
+          ctest . -R numberparsingcheck  --output-on-failure
+          ctest . -R errortests  --output-on-failure
+          ctest . -R integer_tests  --output-on-failure
+          ctest . -R pointercheck  --output-on-failure
+

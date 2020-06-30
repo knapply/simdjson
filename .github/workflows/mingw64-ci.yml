@@ -17,6 +17,8 @@ jobs:
       CMAKE_GENERATOR: MSYS Makefiles
 
     steps:
+      - uses: actions/checkout@v2
+      
       - name: Build 64-bit
         run: |
           mkdir buildx64

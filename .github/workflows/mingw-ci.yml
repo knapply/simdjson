@@ -25,13 +25,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: msys2/setup-msys2@v1
+        with:
+          msystem: ${{ matrix.mingw }}
+
       - name: Compiler
         run: |
-          set MSYSTEM=${{ matrix.mingw }}
           gcc --version
           g++ --version
 
-      - name: Build and Test
+      - name: Build
         run: |
           mkdir build
           cd build

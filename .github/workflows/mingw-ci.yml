@@ -27,6 +27,9 @@ jobs:
 
       - name: Build and Test
         run: |
+          gcc --version
+          g++ --version
+          
           mkdir build
           cd build
           cmake -DSIMDJSON_BUILD_STATIC=ON  -DSIMDJSON_COMPETITION=OFF -DSIMDJSON_GOOGLE_BENCHMARKS=OFF -DSIMDJSON_ENABLE_THREADS=OFF ..

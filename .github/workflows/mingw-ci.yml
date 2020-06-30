@@ -23,6 +23,6 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DSIMDJSON_BUILD_STATIC=ON -DSIMDJSON_DO_NOT_USE_THREADS_NO_MATTER_WHAT=ON ..
+          cmake -DSIMDJSON_BUILD_STATIC=ON -DSIMDJSON_ENABLE_THREADS=OFF ..
           cmake --build . --verbose
           ctest -j4 --output-on-failure -E checkperf
